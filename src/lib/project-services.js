@@ -1,38 +1,34 @@
-import axios from 'axios';
+import axios from "axios";
 
-const baseUrl = 'http://localhost:5000';
-
-
-class ProjectService {  
+class ProjectService {
+  constructor() {
+    this.api = axios.create({
+      baseURL: process.env.REACT_APP_API_URL,
+      withCredentials: true
+    });
+  }
 
   getAllProjects() {
-    return axios.get(`${baseUrl}/api/projects`)
-    .then( ({data}) => data )
+    return this.api.get(`/api/projects`).then(({ data }) => data);
   }
 
   getProjectById(id) {
-    return axios.get(`${baseUrl}/api/projects/${id}`)
-      .then(({data}) => data)
+    return this.api.get(`/api/projects/${id}`).then(({ data }) => data);
   }
 
   addProject(newProject) {
-    return axios
-    .post(`${baseUrl}/api/projects`, newProject)
-      .then(({data}) => data);
+    return this.api.post(`/api/projects`, newProject).then(({ data }) => data);
   }
 
   updateProject(id, projectData) {
-      return axios
-      .put(`${baseUrl}/api/projects/${id}`, projectData)
-        .then(({data}) => data);
-  } 
-
-  deleteProject(id) {
-    return axios
-    .delete(`${baseUrl}/api/projects/${id}`)
-      .then(({data}) => data);
+    return this.api
+      .put(`/api/projects/${id}`, projectData)
+      .then(({ data }) => data);
   }
 
+  deleteProject(id) {
+    return this.api.delete(`/api/projects/${id}`).then(({ data }) => data);
+  }
 }
 
 let projects = new ProjectService();

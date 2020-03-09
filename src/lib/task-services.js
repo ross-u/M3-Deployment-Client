@@ -1,21 +1,24 @@
-import axios from 'axios';
+import axios from "axios";
 
-const baseUrl = 'http://localhost:5000';
-
-class TaskService {  
+class TaskService {
+  constructor() {
+    this.api = axios.create({
+      baseURL: process.env.REACT_APP_API_URL,
+      withCredentials: true
+    });
+  }
 
   getTaskById(projectId, taskId) {
-    return axios.get(`${baseUrl}/api/projects/${projectId}/tasks/${taskId}`)
-      .then(({data}) => data)
+    return this.api
+      .get(`/api/projects/${projectId}/tasks/${taskId}`)
+      .then(({ data }) => data);
   }
 
   addTask(task) {
-    return axios.post(`${baseUrl}/api/tasks`, task)
-      .then(({data}) => data);
+    return this.api.post(`/api/tasks`, task).then(({ data }) => data);
   }
-
 }
 
-let tasks = new TaskService();
+let taskService = new TaskService();
 
-export default tasks;
+export default taskService;
